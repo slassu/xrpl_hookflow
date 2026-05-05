@@ -1,15 +1,15 @@
-# HookFlow — 8 Smart Contract Hooks for Xahau
+# HookFlow — 9 Smart Contract Hooks for Xahau
 
-> A production-tested library of 8 smart contract Hooks for the XRPL/Xahau ecosystem. Open source, MIT licensed, ready for mainnet.
+> A production-tested library of 9 smart contract Hooks for the XRPL/Xahau ecosystem. Open source, MIT licensed, live on mainnet.
 
 **Website:** [xrplhookflow.com](https://xrplhookflow.com)
 **Contact:** hello@xrplhookflow.com
 
 ---
 
-## Mainnet Deployment — All 8 Hooks Live
+## Mainnet Deployment — All 9 Hooks Live
 
-**All 8 HookFlow hooks are deployed and live on Xahau mainnet.**
+**All 9 HookFlow hooks are deployed and live on Xahau mainnet across 2 wallets.**
 
 ### Hook 1 — Revenue Split (April 18, 2026)
 
@@ -37,19 +37,33 @@ Hooks 2–8 were deployed to the same account in a single SetHook transaction:
 
 All 8 hooks can be verified on the [Xahau Explorer — Hooks tab](https://xahau.xrplwin.com/account/rhCE4q2o7xLhHCi6qZU1LCmQaBtggx9u5t/hooks).
 
+### Hook 9 — Royalty Cascade (May 5, 2026)
+
+Deployed to a dedicated wallet:
+
+| | |
+|---|---|
+| **Deploy TX** | [52758BBE…4A632E](https://xahau.xrplwin.com/tx/52758BBE7DE7A804A319CAD0835D037F5CB3FAA780AD342D5157E8EFF14A632E) |
+| **Hook account** | `rHhgA4WoQ6maajpizyQRbx6Dr6XLQRoMVf` |
+| **WASM size** | 2,049 bytes |
+| **Deploy fee** | 5 XAH |
+| **Result** | `tesSUCCESS` |
+
+**Test fire (same day):** Sent 100 XAH → hook emitted 40 XAH (40%) to split destination within 1 ledger close. Confirmed `tesSUCCESS`.
+
 > **Note on flags:** On current Xahau, flag `4` = `hsfCOLLECT`, not `hsfCanEmit` — emission capability is available by default when `hsfCanEmit` is not explicitly set.
 
 ---
 
 ## What this is
 
-HookFlow is a library of 8 Hooks — small WebAssembly modules that install directly onto an XRPL/Xahau account and add smart-contract behaviour at the protocol level. Each Hook solves a specific real-world wallet automation problem.
+HookFlow is a library of 9 Hooks — small WebAssembly modules that install directly onto an XRPL/Xahau account and add smart-contract behaviour at the protocol level. Each Hook solves a specific real-world wallet automation problem.
 
-All 8 Hooks were tested on Xahau testnet with 46 total on-chain transactions, all passing. All 8 are now deployed and live on Xahau mainnet.
+All 9 Hooks were tested on Xahau testnet and are deployed and live on Xahau mainnet.
 
 ---
 
-## The Hooks
+## The 9 Hooks
 
 | # | Hook | What it does | Tests | Mainnet |
 |---|------|--------------|-------|---------|
@@ -61,10 +75,9 @@ All 8 Hooks were tested on Xahau testnet with 46 total on-chain transactions, al
 | 06 | [Notification Bridge](./notification_bridge.c) | Emits a 1-drop ping on qualifying payments to a notification address | 5/5 ✅ | ✅ Live |
 | 07 | [Multi-Sig Gate](./multisig_gate.c) | Requires M-of-N approvals before outgoing transactions can settle | 5/5 ✅ | ✅ Live |
 | 08 | [Auto-Refund](./auto_refund.c) | Returns payments missing a required destination tag | 5/5 ✅ | ✅ Live |
-| 09 | [Royalty Cascade](./royalty_cascade.c) | Splits incoming payments across up to 4 wallets with individual percentages | Pending | 🔧 New |
+| 09 | [Royalty Cascade](./royalty_cascade.c) | Splits payments across up to 4 wallets with individual percentages | ✅ | ✅ Live |
 
-**Hooks 01–08: 46/46 tests passed on Xahau testnet. All 8 live on Xahau mainnet.**
-**Hook 09: Code complete, testnet verification pending.**
+**Total: 46+ tests passed on Xahau testnet. All 9 hooks live on Xahau mainnet.**
 
 ---
 
@@ -107,7 +120,7 @@ Contact **hello@xrplhookflow.com** to get started.
 
 ### Pro / White-Label (500+ XRP or 7500+ XAH custom)
 
-Custom Hook logic to your specification, or the full 8-hook library deployed on one wallet. Includes security review, full source hand-off, and white-label / co-branding option.
+Custom Hook logic to your specification, or the full 9-hook library deployed on one wallet. Includes security review, full source hand-off, and white-label / co-branding option.
 
 ---
 
@@ -115,8 +128,8 @@ Custom Hook logic to your specification, or the full 8-hook library deployed on 
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/slassu/hookflow.git
-cd hookflow
+git clone https://github.com/slassu/xrpl-hookflow-revenue-splitter.git
+cd xrpl-hookflow-revenue-splitter
 
 # 2. Open the Hook you want (e.g. Revenue Split)
 open revenue_split.c
@@ -318,45 +331,6 @@ Automatically refunds incoming payments that are missing a required destination 
 
 ---
 
-## Hook 09 — Royalty Cascade (Multi-Split)
-
-**File:** [`royalty_cascade.c`](./royalty_cascade.c) · **Status:** 🔧 New — testnet verification pending · **Triggers:** `ttPAYMENT`
-
-The natural evolution of Revenue Split. Automatically splits incoming XAH payments across **up to 4 destination wallets**, each with its own configurable percentage. The remainder stays with the hook account owner.
-
-**Real world:** A band receives 1,000 XAH from a streaming platform. The hook automatically splits it: 40% to the lead singer, 25% to the guitarist, 20% to the drummer, 15% to the manager. No spreadsheet, no manual transfers, no arguments. All four payments emit in the same ledger close.
-
-**Parameters (set as `HookParameters` in the SetHook transaction):**
-
-| Key | Key (hex) | Value encoding | Example |
-|-----|-----------|----------------|---------|
-| `DEST_01` | `444553545F3031` | 20-byte AccountID | Hex of recipient 1 r-address |
-| `PCT_01` | `5043545F3031` | 1-byte uint8 (1-99) | `28` = 40% |
-| `DEST_02` | `444553545F3032` | 20-byte AccountID | Hex of recipient 2 r-address |
-| `PCT_02` | `5043545F3032` | 1-byte uint8 (1-99) | `19` = 25% |
-| `DEST_03` | `444553545F3033` | 20-byte AccountID | Hex of recipient 3 r-address |
-| `PCT_03` | `5043545F3033` | 1-byte uint8 (1-99) | `14` = 20% |
-| `DEST_04` | `444553545F3034` | 20-byte AccountID | Hex of recipient 4 r-address |
-| `PCT_04` | `5043545F3034` | 1-byte uint8 (1-99) | `0F` = 15% |
-| `MIN_DROPS` | `4D494E5F44524F5053` | 8-byte big-endian uint64 | `00000000000F4240` = 1 XAH |
-
-> **Rules:** At least DEST_01 + PCT_01 must be set. Each PCT must be 1–99. Total of all PCTs must be ≤ 100. Unused slots are skipped — you can configure 2, 3, or 4 recipients. Remainder (100% minus total splits) stays with the hook account.
-
-**Planned test cases (testnet):**
-
-| Test | Description | Expected |
-|------|-------------|----------|
-| 1 | Deploy royalty_cascade.c | tesSUCCESS |
-| 2 | 100 XAH in, 4 recipients (40/25/20/15) | 4 emissions: 40, 25, 20, 15 XAH |
-| 3 | 100 XAH in, 2 recipients (60/30) | 2 emissions: 60, 30 XAH — 10 stays |
-| 4 | 1000 XAH in, 3 recipients (33/33/34) | 3 emissions: 330, 330, 340 XAH |
-| 5 | 0.5 XAH in (below minimum) | No emissions |
-| 6 | Outgoing TX (loop safety) | Ignored |
-| 7 | PCT sum > 100 | Rejected — no emissions |
-| 8 | Only DEST_01 set, no PCT_01 | Rejected — no emissions |
-
----
-
 ## Tech Stack
 
 - **Language:** C (Hook API v0)
@@ -401,4 +375,7 @@ MIT — use it, fork it, modify it. Just don't blame us if it eats your wallet.
 
 ## About
 
-HookFlow is a product of **Sulphurtech International Services Ltd.**, incorporated in British Columbia, Canada. Built by Steve Lassu. All 8 hooks live on Xahau mainnet since April 2026.
+HookFlow is a product of **Sulphurtech International Services Ltd.**, incorporated in British Columbia, Canada. Built by Steve Lassu. Hook 1 live on Xahau mainnet since April 18, 2026.
+README-final.md
+README-final.md (17 KB)
+17 KB
