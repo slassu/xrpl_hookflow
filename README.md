@@ -113,8 +113,8 @@ Custom Hook logic to your specification, or the full 8-hook library deployed on 
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/slassu/xrpl-hookflow-revenue-splitter.git
-cd xrpl-hookflow-revenue-splitter
+git clone https://github.com/slassu/hookflow.git
+cd hookflow
 
 # 2. Open the Hook you want (e.g. Revenue Split)
 open revenue_split.c
