@@ -11,7 +11,7 @@
  *   MIN_DROPS  (8 bytes)  — Minimum drops to trigger split
  *
  * Website: https://xrplhookflow.com
- * GitHub:  https://github.com/slassu/xrpl-hookflow-revenue-splitter
+ * GitHub:  https://github.com/slassu/hookflow
  */
 
 #include "hookapi.h"
