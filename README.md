@@ -7,9 +7,11 @@
 
 ---
 
-## Mainnet Deployment — Hook 1 Live
+## Mainnet Deployment — All 8 Hooks Live
 
-**Hook 1 (Revenue Split) was deployed and verified on Xahau mainnet on April 18, 2026.**
+**All 8 HookFlow hooks are deployed and live on Xahau mainnet.**
+
+### Hook 1 — Revenue Split (April 18, 2026)
 
 | | |
 |---|---|
@@ -18,13 +20,24 @@
 | **Hook account** | `rhCE4q2o7xLhHCi6qZU1LCmQaBtggx9u5t` |
 | **Split destination** | `rfWWSP7i8Nu3nEuLxfM278tr2EBQ24yaW6` |
 | **Deploy fee** | 1.003565 XAH (2,007-byte WASM) |
-| **Flags used** | `1` (hsfOVERRIDE — unnecessary for fresh install; `hsfCanEmit` was missing, see below) |
+| **Flags** | Updated to `5` (`hsfOVERRIDE + hsfCOLLECT`) via [C90C8249…CFD6A1](https://xahau.xrplwin.com/tx/C90C824986AEB1567B0D01DA3AEFA5C551C3E8BF1DDAB33D93CA720B06CFD6A1) |
 
 **Test fire (same day):** Sent 2 XAH from test account → hook emitted 0.1 XAH (5%) to split destination within 1 ledger close. Both transactions confirmed `tesSUCCESS`.
 
-Hooks 2–8 are production-tested on testnet (46/46 passes) and deploy on demand with purchase.
+### Hooks 2–8 — Full Library (April 21, 2026)
 
-> **Flags update (April 19, 2026):** Initial deploy used `Flags: 1` (`hsfOVERRIDE`) only. Updated via TX [C90C8249…CFD6A1](https://xahau.xrplwin.com/tx/C90C824986AEB1567B0D01DA3AEFA5C551C3E8BF1DDAB33D93CA720B06CFD6A1) to `Flags: 5` (`hsfOVERRIDE + hsfCOLLECT`). Note: on current Xahau, flag `4` = `hsfCOLLECT`, not `hsfCanEmit` — emission capability is available by default when `hsfCanEmit` is not explicitly set.
+Hooks 2–8 were deployed to the same account in a single SetHook transaction:
+
+| | |
+|---|---|
+| **Deploy TX** | [16F447A8…E1E8C2](https://xahau.xrplwin.com/tx/16F447A8EC629BBD117E226B899C0A4960D8D610E5E5B19CE867B9180DE1E8C2) |
+| **Hook account** | `rhCE4q2o7xLhHCi6qZU1LCmQaBtggx9u5t` |
+| **Hooks installed** | 7 new hooks (slots 1–7) alongside existing Revenue Split (slot 0) |
+| **Result** | `tesSUCCESS` — all 8 hooks active on one account |
+
+All 8 hooks can be verified on the [Xahau Explorer — Hooks tab](https://xahau.xrplwin.com/account/rhCE4q2o7xLhHCi6qZU1LCmQaBtggx9u5t/hooks).
+
+> **Note on flags:** On current Xahau, flag `4` = `hsfCOLLECT`, not `hsfCanEmit` — emission capability is available by default when `hsfCanEmit` is not explicitly set.
 
 ---
 
@@ -32,24 +45,24 @@ Hooks 2–8 are production-tested on testnet (46/46 passes) and deploy on demand
 
 HookFlow is a library of 8 Hooks — small WebAssembly modules that install directly onto an XRPL/Xahau account and add smart-contract behaviour at the protocol level. Each Hook solves a specific real-world wallet automation problem.
 
-All 8 Hooks were tested on Xahau testnet with 46 total on-chain transactions, all passing. They are ready for mainnet deployment today.
+All 8 Hooks were tested on Xahau testnet with 46 total on-chain transactions, all passing. All 8 are now deployed and live on Xahau mainnet.
 
 ---
 
 ## The 8 Hooks
 
-| # | Hook | What it does | Tests |
-|---|------|--------------|-------|
-| 01 | [Revenue Split](./revenue_split.c) | Automatically splits a % of every incoming payment to a second wallet | 8/8 ✅ |
-| 02 | [Spending Limit](./spending_limit.c) | Caps daily outgoing spend at a configured amount | 8/8 ✅ |
-| 03 | [Firewall](./firewall.c) | Blocks payments from specific sender addresses at protocol level | 5/5 ✅ |
-| 04 | [Receipt Logger](./receipt_logger.c) | Permanently logs incoming payments to on-chain state — LAST + TOTAL | 5/5 ✅ |
-| 05 | [Escrow Release](./escrow_release.c) | Validates escrow finish conditions before release is allowed | 4/4 ✅ |
-| 06 | [Notification Bridge](./notification_bridge.c) | Emits a 1-drop ping on qualifying payments to a notification address | 5/5 ✅ |
-| 07 | [Multi-Sig Gate](./multisig_gate.c) | Requires M-of-N approvals before outgoing transactions can settle | 5/5 ✅ |
-| 08 | [Auto-Refund](./auto_refund.c) | Returns payments missing a required destination tag | 5/5 ✅ |
+| # | Hook | What it does | Tests | Mainnet |
+|---|------|--------------|-------|---------|
+| 01 | [Revenue Split](./revenue_split.c) | Automatically splits a % of every incoming payment to a second wallet | 8/8 ✅ | ✅ Live |
+| 02 | [Spending Limit](./spending_limit.c) | Caps daily outgoing spend at a configured amount | 8/8 ✅ | ✅ Live |
+| 03 | [Firewall](./firewall.c) | Blocks payments from specific sender addresses at protocol level | 5/5 ✅ | ✅ Live |
+| 04 | [Receipt Logger](./receipt_logger.c) | Permanently logs incoming payments to on-chain state — LAST + TOTAL | 5/5 ✅ | ✅ Live |
+| 05 | [Escrow Release](./escrow_release.c) | Validates escrow finish conditions before release is allowed | 4/4 ✅ | ✅ Live |
+| 06 | [Notification Bridge](./notification_bridge.c) | Emits a 1-drop ping on qualifying payments to a notification address | 5/5 ✅ | ✅ Live |
+| 07 | [Multi-Sig Gate](./multisig_gate.c) | Requires M-of-N approvals before outgoing transactions can settle | 5/5 ✅ | ✅ Live |
+| 08 | [Auto-Refund](./auto_refund.c) | Returns payments missing a required destination tag | 5/5 ✅ | ✅ Live |
 
-**Total: 46/46 tests passed on Xahau testnet.**
+**Total: 46/46 tests passed on Xahau testnet. All 8 hooks live on Xahau mainnet.**
 
 ---
 
