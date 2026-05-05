@@ -1,15 +1,15 @@
-# HookFlow — 9 Smart Contract Hooks for Xahau
+# HookFlow — 10 Smart Contract Hooks for Xahau
 
-> A production-tested library of 9 smart contract Hooks for the XRPL/Xahau ecosystem. Open source, MIT licensed, live on mainnet.
+> A production-tested library of 10 smart contract Hooks for the XRPL/Xahau ecosystem. Open source, MIT licensed, live on mainnet.
 
 **Website:** [xrplhookflow.com](https://xrplhookflow.com)
 **Contact:** hello@xrplhookflow.com
 
 ---
 
-## Mainnet Deployment — All 9 Hooks Live
+## Mainnet Deployment — All 10 Hooks Live
 
-**All 9 HookFlow hooks are deployed and live on Xahau mainnet across 2 wallets.**
+**All 10 HookFlow hooks are deployed and live on Xahau mainnet across 2 wallets.**
 
 ### Hook 1 — Revenue Split (April 18, 2026)
 
@@ -54,6 +54,27 @@ Deployed to a dedicated wallet:
 > **Note on flags:** On current Xahau, flag `4` = `hsfCOLLECT`, not `hsfCanEmit` — emission capability is available by default when `hsfCanEmit` is not explicitly set.
 
 ---
+
+
+### Hook 10 — Subscription (May 5, 2026)
+
+Deployed to the same dedicated wallet as Hook 9:
+
+| | |
+|---|---|
+| **Deploy TX** | [DA1F5949…FC361](https://xahau.xrplwin.com/tx/DA1F5949DA3B87403550B2E6A3EAA2F6763E567560140E52AE169073EABFC361) |
+| **Hook account** | `rHhgA4WoQ6maajpizyQRbx6Dr6XLQRoMVf` |
+| **Hook slot** | Slot 1 (alongside Royalty Cascade in slot 0) |
+| **Result** | `tesSUCCESS` — subscription hook active |
+
+**Parameters:**
+| Parameter | Size | Description |
+|-----------|------|-------------|
+| `AUTHADDR` | 20 bytes | AccountID of authorized merchant |
+| `SUBAMT` | 8 bytes | Subscription amount in drops (BE uint64) |
+| `INTRVL` | 4 bytes | Minimum ledger sequences between pulls (BE uint32) |
+
+**How it works:** The authorized merchant sends any payment (even 1 drop) to the subscriber's hooked wallet. The hook validates the sender, checks the interval has elapsed, and emits the subscription payment back to the merchant automatically. State tracks the last pull ledger sequence.
 
 ## What this is
 
@@ -375,7 +396,7 @@ MIT — use it, fork it, modify it. Just don't blame us if it eats your wallet.
 
 ## About
 
-HookFlow is a product of **Sulphurtech International Services Ltd.**, incorporated in British Columbia, Canada. Built by Steve Lassu. Hook 1 live on Xahau mainnet since April 18, 2026.
+HookFlow is a product of **Sulphurtech International Services Ltd.**, incorporated in British Columbia, Canada. Built by Steve Lassu. 10 hooks live on Xahau mainnet. First hook deployed April 18, 2026.
 README-final.md
 README-final.md (17 KB)
 17 KB
